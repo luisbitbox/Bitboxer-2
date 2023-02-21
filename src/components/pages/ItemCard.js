@@ -2,19 +2,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios';
-import { MiContexto } from '../../helpers/MiContexto';
+
 
 export const ItemCard = () => {
     const [checked, setChecked] = useState(false);
     const [item, setItem] = useState({});
     const [supplier, setSupplier] = useState([]);
+    const [priceReduction, setpriceReduction] = useState([]);
     const params = useParams();
     const navigate = useNavigate();
-    const { valor, actualizarValor } = useContext(MiContexto);
+
 
     useEffect(() => {
         getItem();
         getSuppliers();
+        getPriceReductions();
     }, []);
 
     const getItem = async(req, res)=> {
@@ -32,6 +34,18 @@ export const ItemCard = () => {
         try {
             const result = await axios.get("http://localhost:8080/erp/api/item/" + params.id +"/suppliers");
             setSupplier(result.data);
+            console.log(result.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
+    
+    const getPriceReductions = async(req, res)=> {
+        try {
+            const result = await axios.get("http://localhost:8080/erp/api/item/" + params.id +"/priceReductions");
+            setpriceReduction(result.data);
+            console.log(result.data);
         } catch (error) {
             console.log(error);
         }
@@ -63,8 +77,7 @@ export const ItemCard = () => {
     }
 
     const goToSupplier = () => {
-        navigate(`/supplier`);
-        actualizarValor(false);
+        navigate(`/supplier/${false}`);
     }
 
 
@@ -103,7 +116,7 @@ export const ItemCard = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="exampleInputPassword1" className="form-label">Creation</label>
-                                <input type="date" className="form-control" id="exampleInputEmail1" defaultValue={item.creation} name="creation" readOnly/>
+                                <input type="text" className="form-control" id="exampleInputEmail1" defaultValue={item.creation} name="creation" readOnly/>
                             </div>
                             <div className="mb-3 form-check">
                                 <input type="checkbox" className="form-check-input" id="exampleCheck1" name='state' checked={checked} onChange={handleChange} />
@@ -147,11 +160,11 @@ export const ItemCard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {supplier.map((s) => {
+                                {priceReduction.map((pr) => {
                                     return (
-                                        <tr key={s.idSupplier}  >
-                                            <td>{s.name}</td>
-                                            <td>{s.country}</td>
+                                        <tr key={pr.idSupplier}  >
+                                            <td>{pr.name}</td>
+                                            <td>{pr.country}</td>
                                         </tr>
                                     )
                                 })}

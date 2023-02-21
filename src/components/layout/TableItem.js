@@ -18,7 +18,12 @@ export const TableItem = () => {
 
     const getItems = async() => {
         try{
-            const result = await axios.get('http://localhost:8080/erp/api/item');
+            const result = await axios.get('http://localhost:8080/erp/api/item', {
+                headers: {
+                    username: "Luis",
+                    password: "user"
+                }
+            });
             setItem(result.data);
         }catch(error){
             console.log(error);

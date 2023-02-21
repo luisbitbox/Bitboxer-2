@@ -26,6 +26,7 @@ export const AppRouter = () => {
                 <Route path='/item/:id' element={<ItemCard></ItemCard>}></Route>
                 <Route path='/newItem' element={<NewItem></NewItem>}></Route>
                 <Route path='/supplier' element={<Supplier></Supplier>}></Route>
+                <Route path='/supplier/:selection' element={<Supplier></Supplier>}></Route>
                 <Route path='/newSupplier' element={<NewSupplier></NewSupplier>}></Route>
                 <Route path='/*' element={<Error></Error>}></Route>
             </Routes>

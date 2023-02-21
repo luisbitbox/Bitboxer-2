@@ -1,18 +1,18 @@
 import './App.css';
-import { MiContexto } from './helpers/MiContexto';
 import { AppRouter } from './router/AppRouter';
+import { ItemProvider } from './helpers/ItemContext'
 
 function App() {
-  const valorContexto = true;
 
   return (
-      <MiContexto.Provider value={valorContexto}>
         <div className="App">
+          <ItemProvider>
 
             <AppRouter></AppRouter> 
 
+          </ItemProvider>
+
         </div>
-      </MiContexto.Provider>
   );
 }
 
