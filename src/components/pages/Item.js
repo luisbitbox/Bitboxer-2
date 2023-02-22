@@ -1,11 +1,11 @@
 import React from 'react'
 import { TableItem } from '../layout/TableItem'
 
-export const Item = () => {
+export const Item = ({ itemFilter }) => {
   return (
     <div className='content'>
         <h1>Items</h1>
-        <TableItem></TableItem>
+        <TableItem itemFilter={itemFilter}></TableItem>
     </div>
   )
 }

@@ -2,13 +2,18 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios';
+import { ItemContext } from '../../helpers/ItemContext';
 
 
 export const ItemCard = () => {
     const [checked, setChecked] = useState(false);
+
     const [item, setItem] = useState({});
+    const { setGlobalItem  } = useContext(ItemContext);
+
     const [supplier, setSupplier] = useState([]);
     const [priceReduction, setpriceReduction] = useState([]);
+
     const params = useParams();
     const navigate = useNavigate();
 
@@ -18,6 +23,7 @@ export const ItemCard = () => {
         getSuppliers();
         getPriceReductions();
     }, []);
+
 
     const getItem = async(req, res)=> {
         try {
@@ -57,7 +63,8 @@ export const ItemCard = () => {
         const newItem = {
             description: e.target.description.value,
             price: e.target.price.value,
-            state: checked
+            state: checked,
+            suppliers: supplier
         };
 
         try {
@@ -77,7 +84,9 @@ export const ItemCard = () => {
     }
 
     const goToSupplier = () => {
-        navigate(`/supplier/${false}`);
+        setGlobalItem(item);
+        console.log(item);
+        navigate(`/supplier`);
     }
 
 
@@ -146,7 +155,7 @@ export const ItemCard = () => {
                                 })}
                             </tbody>
                         </table>
-                        <button type="submit" className="btn btn-primary" onClick={goToSupplier}>Add</button>
+                        <button type="submit" className="btn btn-primary" onClick={goToSupplier}>Add Supplier</button>
                     </div>
 
                     <div className="col-sm-6 element4">
@@ -170,7 +179,7 @@ export const ItemCard = () => {
                                 })}
                             </tbody>
                         </table>
-                        <button type="submit" className="btn btn-primary" onClick={goToSupplier}>Add</button>
+                        <button type="submit" className="btn btn-primary">Add Price Reduction</button>
                 </div>
                 </div>
 

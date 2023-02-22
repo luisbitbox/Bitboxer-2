@@ -7,10 +7,10 @@ import { ItemContext } from '../../helpers/ItemContext'
 export const TableSupplier = () => {
     const [supplier, setSupplier] = useState([]);
     const navigate = useNavigate();
-    const { item, setItem  } = useContext(ItemContext);
+
+    const { globalItem } = useContext(ItemContext);
+
     const params = useParams();
-    /* const location = useLocation();
-    const isAvailable = location.state.isAvailable; */
 
 
     useEffect(()=>{
@@ -35,20 +35,19 @@ export const TableSupplier = () => {
 
     const goToNewSupplier = () => {
         navigate(`/newSupplier`);
-
     }
 
-    const goToItemCard = (id) => {
-        const itemUpdated = {
-            id: item.id,
-            code: item.id,
-            fechaAlta: item.id,
-            fechaCreacion: item.id,
-            suppliers: item.id,
-            priceReductions: item.id,
+    const goToItemCard = (id, supplier) => {
+        addSupplier(supplier);
+        navigate(`/item/${id}`);
+    }
+
+    const addSupplier = async (supplier) => {
+        try{
+            await axios.put(`http://localhost:8080/erp/api/item/${globalItem.idItem}/addSupplier`, supplier);
+        }catch(error){
+            console.log(error);
         }
-        setItem(itemUpdated);
-        navigate(`/item${id}`);
     }
 
     
@@ -59,9 +58,7 @@ export const TableSupplier = () => {
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Country</th>
-                        {params.selection &&
-                            <th scope="col">Select</th>    
-                        }
+                        <th scope="col">Select</th>    
                     </tr>
                 </thead>
                 <tbody>
@@ -70,23 +67,18 @@ export const TableSupplier = () => {
                             <tr key={s.idSupplier}  >
                                 <td>{s.name}</td>
                                 <td>{s.country}</td>
-                                {params.selection &&
                                 <td>
                                     <div>
-                                        <button className="btn btn-primary" onClick={goToItemCard(item.id)}>Select</button>
+                                        <button className="btn btn-primary" onClick={() => goToItemCard(globalItem.idItem, s)}>Select</button>
                                     </div>
                                 </td>
-                                }
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
-            {!params.selection &&
 
-                <button type="submit" className="btn btn-primary" onClick={goToNewSupplier}>New</button>
-
-            }
+            <button type="submit" className="btn btn-primary" onClick={goToNewSupplier}>New</button>
             
     </div>
   )

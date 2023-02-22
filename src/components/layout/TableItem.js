@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 
 
-export const TableItem = () => {
+export const TableItem = ({itemFilter}) => {
 
     const [item, setItem] = useState([]);
     const navigate = useNavigate();
+    console.log("Filtro del Header es: "+itemFilter);
 
 
     useEffect(()=>{
 
         getItems();
 
-    },[]);
+    },[itemFilter]);
 
     const getItems = async() => {
         try{
@@ -24,7 +25,12 @@ export const TableItem = () => {
                     password: "user"
                 }
             });
-            setItem(result.data);
+
+            if(itemFilter){
+                setItem(result.data.filter((i) => i.state==="ACTIVE"));
+            }else{
+                setItem([]);
+            }
         }catch(error){
             console.log(error);
         }
@@ -35,7 +41,7 @@ export const TableItem = () => {
         navigate(`/item/${id}`);
     }
 
-    const goToNewItem = (id) => {
+    const goToNewItem = () => {
         navigate(`/newItem`);
     }
 

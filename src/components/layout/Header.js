@@ -2,7 +2,16 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 
-export const Header = () => {
+export const Header = ({ onItemFilter}) => {
+    const handleSelect = (e) => {
+        const value = e.target.value;
+        let filtro = false;
+        if(value === '1'){
+            filtro = true;
+        }
+        onItemFilter(filtro);
+    }
+
   return (
     <header>
 
@@ -21,10 +30,12 @@ export const Header = () => {
                       <NavLink to="/supplier" className="nav-link">Suppliers</NavLink>
                   </li>
               </ul>
-              <form className="form-inline my-2 my-lg-0 display-row">
-                  <input className="form-control mr-sm-2 rm-12" type="search" placeholder="Search" aria-label="Search" />
-                  <button className="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-              </form>
+              <div>
+              <select className="form-select" aria-label="Default select example" onClick={handleSelect} >
+                <option value="1">ACTIVE</option>
+                <option value="2">INACTIVE</option>
+              </select>
+              </div>
           </div>
         </nav>
 
