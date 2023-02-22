@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
-import { useNavigate, useParams, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 import { ItemContext } from '../../helpers/ItemContext'
 
@@ -9,8 +9,6 @@ export const TableSupplier = () => {
     const navigate = useNavigate();
 
     const { globalItem } = useContext(ItemContext);
-
-    const params = useParams();
 
 
     useEffect(()=>{

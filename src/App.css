@@ -16,6 +16,27 @@ nav li{
   padding: 10px auto;
 }
 
+.principal{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.filaTablaBtn{
+  display: flex;
+  flex-direction: row;
+}
+
+.btnFila{
+  margin-right: 10px;
+}
+
+.tablaPriceRed{
+  margin-left: 150px;
+  display:flex;
+  flex-direction: column;
+}
+
 .item-card{
   display: grid;
   grid-template-rows: minmax(0, 1fr) minmax(0, max-content);

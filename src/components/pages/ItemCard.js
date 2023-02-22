@@ -40,7 +40,6 @@ export const ItemCard = () => {
         try {
             const result = await axios.get("http://localhost:8080/erp/api/item/" + params.id +"/suppliers");
             setSupplier(result.data);
-            console.log(result.data);
         } catch (error) {
             console.log(error);
         }
@@ -85,8 +84,12 @@ export const ItemCard = () => {
 
     const goToSupplier = () => {
         setGlobalItem(item);
-        console.log(item);
         navigate(`/supplier`);
+    }
+    
+    const goToNewPriceReduction = () => {
+        setGlobalItem(item);
+        navigate(`/newPriceReduction`);
     }
 
 
@@ -171,15 +174,16 @@ export const ItemCard = () => {
                             <tbody>
                                 {priceReduction.map((pr) => {
                                     return (
-                                        <tr key={pr.idSupplier}  >
-                                            <td>{pr.name}</td>
-                                            <td>{pr.country}</td>
+                                        <tr key={pr.idPriceReduction}  >
+                                            <td>{pr.reducedPrice}</td>
+                                            <td>{pr.startDate}</td>
+                                            <td>{pr.endDate}</td>
                                         </tr>
                                     )
                                 })}
                             </tbody>
                         </table>
-                        <button type="submit" className="btn btn-primary">Add Price Reduction</button>
+                        <button type="submit" className="btn btn-primary" onClick={goToNewPriceReduction}>Add Price Reduction</button>
                 </div>
                 </div>
 

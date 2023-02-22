@@ -7,6 +7,7 @@ import { Item } from '../components/pages/Item'
 import { ItemCard } from '../components/pages/ItemCard'
 import { Login } from '../components/pages/Login'
 import { NewItem } from '../components/pages/NewItem'
+import { NewPriceReduction } from '../components/pages/NewPriceReduction'
 import { NewSupplier } from '../components/pages/NewSupplier'
 import { Supplier } from '../components/pages/Supplier'
 
@@ -31,6 +32,7 @@ export const AppRouter = () => {
                 <Route path='/item' element={<Item itemFilter={itemFilter}></Item>}></Route>
                 <Route path='/item/:id' element={<ItemCard></ItemCard>}></Route>
                 <Route path='/newItem' element={<NewItem></NewItem>}></Route>
+                <Route path='/newPriceReduction' element={<NewPriceReduction></NewPriceReduction>}></Route>
                 <Route path='/supplier' element={<Supplier></Supplier>}></Route>
                 <Route path='/supplier/:id' element={<Supplier></Supplier>}></Route>
                 <Route path='/newSupplier' element={<NewSupplier></NewSupplier>}></Route>

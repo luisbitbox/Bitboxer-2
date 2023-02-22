@@ -8,7 +8,6 @@ export const TableItem = ({itemFilter}) => {
 
     const [item, setItem] = useState([]);
     const navigate = useNavigate();
-    console.log("Filtro del Header es: "+itemFilter);
 
 
     useEffect(()=>{
