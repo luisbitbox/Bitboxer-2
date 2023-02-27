@@ -18,12 +18,7 @@ export const TableItem = ({itemFilter}) => {
 
     const getItems = async() => {
         try{
-            const result = await axios.get('http://localhost:8080/erp/api/item', {
-                headers: {
-                    username: "Luis",
-                    password: "user"
-                }
-            });
+            const result = await axios.get('http://localhost:8080/erp/api/item');
 
             if(itemFilter){
                 setItem(result.data.filter((i) => i.state==="ACTIVE"));
@@ -66,7 +61,7 @@ export const TableItem = ({itemFilter}) => {
                                 <td>{i.description}</td>
                                 <td>{i.price}</td>
                                 <td>{i.creation}</td>
-                                <td>{i.creator}</td>
+                                <td>{i.creator.username}</td>
                                 <td>
                                     <div className="form-check">
                                         <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={i.state} readOnly/>

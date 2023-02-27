@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios';
+import { UserContext } from '../../helpers/UserContext';
 
 export const NewItem = () => {
 
     const navigate = useNavigate();
+    const {globalUser} = useContext(UserContext);
 
-    useEffect(()=>{
-      localStorage.setItem('itemCode', "");
-    }, []);
 
     const saveItem = async (e) =>{
         e.preventDefault();
@@ -17,7 +16,7 @@ export const NewItem = () => {
         const item = {
           itemCode: e.target.itemCode.value,
           description: e.target.description.value,
-          price: e.target.price.value
+          price: e.target.price.value,
         };
       
         // Verifica si el código de artículo ya existe en el almacenamiento local
@@ -37,9 +36,14 @@ export const NewItem = () => {
       
         try {
           // Hace una solicitud POST al servidor para guardar el artículo
-          const response = await axios.post("http://localhost:8080/erp/api/item", item);
+          const result = await axios.post("http://localhost:8080/erp/api/item", item);
+          
+          const idItem = result.data.idItem;
+          console.log(globalUser);
+
+          await axios.put(`http://localhost:8080/erp/api/item/${idItem}/addCreator`, globalUser);
           navigate(`/item`);
-          return response;
+
         } catch (error) {
           console.log(error);
         }

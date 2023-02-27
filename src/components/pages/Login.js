@@ -1,25 +1,43 @@
-import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate, NavLink } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../../helpers/UserContext';
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
+  const {globalUser, setGlobalUser} = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
+        const result = await axios.get('http://localhost:8080/erp/api/auth');
 
-        const result = await axios.post('http://localhost:8080/erp/api/login', {username, password});
+        const foundUser = result.data.find(usuario => {
+            return username === usuario.username;
+        });
+
+          if (foundUser) {
+            setGlobalUser(foundUser);
+            console.log(globalUser);
+            navigate("/item");
+          } else {
+            alert("Usuario o contraseña incorrectos");
+          }
         
-        localStorage.setItem('token', result.data.token);
-        console.log(result.data.token);
+        console.log(result.data);
 
       }catch(error){
         console.error(error)
       };
   }
 
+  useEffect(() => {
+    console.log(globalUser);
+  }, [globalUser]);
 
   return (
     <div className='login'>
@@ -38,13 +56,17 @@ export const Login = () => {
                                 <label htmlFor="password" className="text-info">Password:</label><br/>
                                 <input type="password" name="password" id="password" className="form-control"value={password} onChange={e => setPassword(e.target.value)}/>
                             </div>
+                            <div className="form-group my-3">
+                                <select className="form-select" aria-label="Default select example" name='role'>
+                                    <option value={role} onChange={e => setRole(e.target.value)}>ADMIN</option>
+                                    <option value={role} onChange={e => setRole(e.target.value)}>USER</option>
+                                </select>
+                            </div>
                             <div className="form-group">
-                                <label htmlFor="remember-me" className="text-info"><span>Remember me</span> 
-                                <span><input id="remember-me" name="remember-me" type="checkbox"/></span></label><br/>
                                 <input type="submit" name="submit" className="btn btn-info btn-md" value="submit"/>
                             </div>
-                            <div id="register-link" className="text-right">
-                                <a href="#" className="text-info">Register here</a>
+                            <div id="register-link" className="text-info">
+                                <NavLink to="/register" className="nav-link">Register here</NavLink>
                             </div>
                         </form>
                     </div>

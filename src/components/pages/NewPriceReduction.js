@@ -37,6 +37,12 @@ export const NewPriceReduction = () => {
         if(!newPriceReduction.reducedPrice || newPriceReduction.startDate===null || newPriceReduction.endDate===null){
             alert("Los campos no pueden estar vacíos")
             return
+
+        }
+        // Verifica que la fecha inicial no sea mayor que la fecha final
+        if(newPriceReduction.startDate > newPriceReduction.endDate){
+            alert("La fecha inicial no puede ser mayor que la fecha final")
+            return
         }
 
         try {

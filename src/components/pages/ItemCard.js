@@ -9,6 +9,7 @@ export const ItemCard = () => {
     const [checked, setChecked] = useState(false);
 
     const [item, setItem] = useState({});
+    const [creator, setCreator] = useState({});
     const { setGlobalItem  } = useContext(ItemContext);
 
     const [supplier, setSupplier] = useState([]);
@@ -28,6 +29,8 @@ export const ItemCard = () => {
     const getItem = async(req, res)=> {
         try {
             const result = await axios.get("http://localhost:8080/erp/api/item/" + params.id);
+            console.log(result.data);
+            setCreator(result.data.creator);
             setItem(result.data);
             setChecked(result.data.state)
         } catch (error) {
@@ -105,7 +108,7 @@ export const ItemCard = () => {
                             <h2 className="card-title">Description: {item.description}</h2>
                             <h2>Price: {item.price}</h2>
                             <h2>Creation: {item.creation}</h2>
-                            <h2>Creator: {item.creator}</h2>
+                            <h2>Creator: {creator.username}</h2>
                         </div>
                 </div>
                 

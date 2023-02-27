@@ -9,6 +9,7 @@ import { Login } from '../components/pages/Login'
 import { NewItem } from '../components/pages/NewItem'
 import { NewPriceReduction } from '../components/pages/NewPriceReduction'
 import { NewSupplier } from '../components/pages/NewSupplier'
+import { Register } from '../components/pages/Register'
 import { Supplier } from '../components/pages/Supplier'
 
 export const AppRouter = () => {
@@ -29,6 +30,7 @@ export const AppRouter = () => {
 
             <Routes>
                 <Route path='/' element={<Login></Login>}></Route>
+                <Route path='/register' element={<Register></Register>}></Route>
                 <Route path='/item' element={<Item itemFilter={itemFilter}></Item>}></Route>
                 <Route path='/item/:id' element={<ItemCard></ItemCard>}></Route>
                 <Route path='/newItem' element={<NewItem></NewItem>}></Route>
