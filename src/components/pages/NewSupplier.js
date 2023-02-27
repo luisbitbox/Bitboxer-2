@@ -10,13 +10,18 @@ export const NewSupplier = () => {
     const saveSupplier = async (e) =>{
         e.preventDefault();
 
-        const newSupplier = {
+        const supplier = {
             name: e.target.name.value,
             country: e.target.country.value,
         };
 
+        // Verifica si alguno de los campos está vacío
+        if(!supplier.name || !supplier.country){
+            alert("Los campos no pueden estar vacíos")
+            return
+          }
         try {
-            const result = await axios.post("http://localhost:8080/erp/api/supplier", newSupplier);
+            const result = await axios.post("http://localhost:8080/erp/api/supplier", supplier);
             navigate(`/supplier`);
             return result;
         } catch (error) {

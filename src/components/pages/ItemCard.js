@@ -172,15 +172,20 @@ export const ItemCard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {priceReduction.map((pr) => {
-                                    return (
-                                        <tr key={pr.idPriceReduction}  >
-                                            <td>{pr.reducedPrice}</td>
-                                            <td>{pr.startDate}</td>
-                                            <td>{pr.endDate}</td>
+                                {priceReduction ? ( priceReduction.map((pr) => {
+                                        return (
+                                            <tr key={pr.idPriceReduction}  >
+                                                <td>{pr.reducedPrice}</td>
+                                                <td>{pr.startDate}</td>
+                                                <td>{pr.endDate}</td>
+                                            </tr>
+                                        )
+                                    })):(
+                                        <tr>
+                                            <td> <p>No hay descuentos de precio actualmente</p></td>
                                         </tr>
                                     )
-                                })}
+                                }
                             </tbody>
                         </table>
                         <button type="submit" className="btn btn-primary" onClick={goToNewPriceReduction}>Add Price Reduction</button>

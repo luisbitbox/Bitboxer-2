@@ -9,7 +9,6 @@ export const NewPriceReduction = () => {
     const navigate = useNavigate();
     const { globalItem } = useContext(ItemContext);
     const [priceReduction, setpriceReduction] = useState([]);
-    const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
         getPriceReductions();
@@ -27,29 +26,32 @@ export const NewPriceReduction = () => {
 
     const newPriceReduction = async (e) =>{
         e.preventDefault();
-        setLoading(true);
 
         const newPriceReduction = {
-
             reducedPrice: e.target.elements.reducedPrice.value,
             startDate: new Date(e.target.elements.startDate.value),
             endDate: new Date(e.target.elements.endDate.value)
         };
 
+        // Verifica si alguno de los campos está vacío
+        if(!newPriceReduction.reducedPrice || newPriceReduction.startDate===null || newPriceReduction.endDate===null){
+            alert("Los campos no pueden estar vacíos")
+            return
+        }
+
         try {
             const result = await axios.post(`http://localhost:8080/erp/api/priceReduction`, newPriceReduction);
             getPriceReductions();
-            setLoading(false);
             return result;
         } catch (error) {
             console.log(error);
         }
     }
 
-    const addPriceReductionToItem = async(priceReduction) => {
+    const addPriceReductionToItem = async(id) => {
         try {
             console.log(priceReduction.idPriceReduction);
-            await axios.put(`http://localhost:8080/erp/api/item/${globalItem.idItem}/addPriceReduction`, priceReduction);
+            await axios.put(`http://localhost:8080/erp/api/priceReduction/${id}/item`, globalItem);
             console.log(priceReduction);
             
             navigate(`/item/${globalItem.idItem}`);
@@ -111,7 +113,7 @@ export const NewPriceReduction = () => {
                                         <td>{pr.endDate}</td>
                                         <td>
                                             <div className='filaTablaBtn'>
-                                                <button className="btn btn-primary btnFila" onClick={(e) => addPriceReductionToItem(pr)}>Select</button>
+                                                <button className="btn btn-primary btnFila" onClick={(e) => addPriceReductionToItem(pr.idPriceReduction)}>Select</button>
                                                 <button className="btn btn-danger" onClick={(e) => deleteItem(pr.idPriceReduction)}>Delete</button>
                                             </div>
                                         </td>

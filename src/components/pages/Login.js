@@ -3,34 +3,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export const Login = () => {
-  const[credentials, setCredentiasl] = useState({});
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const logearse = (e) => {
-      e.preventDefault();
-      const newUser = {
-        username: e.target.username.value,
-        password: e.target.password.value
-      }
-      console.log("Logueado usuario: ", newUser.username + " - " + newUser.password);
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
 
-  const sedLoginRequest = async (e) => {
-    try {
-      const reqBody = {
-        username: e.target.username.value,
-        password: e.target.password.value
-      }
-      const result = await axios.get("http://localhost:8080/erp/api/login", {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        method: "post",
-        body: JSON.stringify(reqBody)
-      });
-      setCredentiasl(result.data);
-    } catch (error) {
-        console.log(error);
-    }
+        const result = await axios.post('http://localhost:8080/erp/api/login', {username, password});
+        
+        localStorage.setItem('token', result.data.token);
+        console.log(result.data.token);
+
+      }catch(error){
+        console.error(error)
+      };
   }
 
 
@@ -41,15 +28,15 @@ export const Login = () => {
             <div id="login-row" className="row justify-content-center align-items-center">
                 <div id="login-column" className="col-md-6">
                     <div id="login-box" className="col-md-12">
-                        <form id="login-form" className="form" onSubmit={sedLoginRequest}>
+                        <form id="login-form" className="form" onSubmit={handleSubmit}>
                             <h3 className="text-center text-info">Login</h3>
                             <div className="form-group">
                                 <label htmlFor="username" className="text-info">Username:</label><br/>
-                                <input type="text" name="username" id="username" className="form-control"/>
+                                <input type="text" name="username" id="username" className="form-control" value={username} onChange={e => setUsername(e.target.value)}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password" className="text-info">Password:</label><br/>
-                                <input type="password" name="password" id="password" className="form-control"/>
+                                <input type="password" name="password" id="password" className="form-control"value={password} onChange={e => setPassword(e.target.value)}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="remember-me" className="text-info"><span>Remember me</span> 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios';
@@ -7,23 +7,44 @@ export const NewItem = () => {
 
     const navigate = useNavigate();
 
+    useEffect(()=>{
+      localStorage.setItem('itemCode', "");
+    }, []);
+
     const saveItem = async (e) =>{
         e.preventDefault();
-
-        const newItem = {
-            itemCode: e.target.itemCode.value,
-            description: e.target.description.value,
-            price: e.target.price.value
+      
+        const item = {
+          itemCode: e.target.itemCode.value,
+          description: e.target.description.value,
+          price: e.target.price.value
         };
-
-        try {
-            const result = await axios.post("http://localhost:8080/erp/api/item", newItem);
-            navigate(`/item`);// No se ejecuta
-            return result;
-        } catch (error) {
-            console.log(error);
+      
+        // Verifica si el código de artículo ya existe en el almacenamiento local
+        if(item.itemCode === localStorage.getItem("itemCode")){
+          alert("El código no puede estar repetido")
+          return
         }
-    }
+      
+        // Verifica si alguno de los campos está vacío
+        if(!item.itemCode || !item.description || !item.price){
+          alert("Los campos no pueden estar vacíos")
+          return
+        }
+      
+        // Guarda el código del artículo en el almacenamiento local
+        localStorage.setItem('itemCode', item.itemCode);
+      
+        try {
+          // Hace una solicitud POST al servidor para guardar el artículo
+          const response = await axios.post("http://localhost:8080/erp/api/item", item);
+          navigate(`/item`);
+          return response;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      
 
   return (
     <div className='content'>
