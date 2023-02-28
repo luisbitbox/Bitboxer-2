@@ -3,17 +3,18 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 import { ItemContext } from '../../helpers/ItemContext'
+import { DesactivationContext } from '../../helpers/DesactivationContext'
 
 export const TableSupplier = () => {
     const [supplier, setSupplier] = useState([]);
     const navigate = useNavigate();
 
     const { globalItem } = useContext(ItemContext);
+    const {globalAction} = useContext(DesactivationContext);
 
 
     useEffect(()=>{
         getSuppliers();
-
     },[]);
 
     const getSuppliers = async() => {
@@ -56,7 +57,9 @@ export const TableSupplier = () => {
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Country</th>
-                        <th scope="col">Select</th>    
+                        {globalAction.active &&
+                            <th scope="col">Select</th>    
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -65,11 +68,13 @@ export const TableSupplier = () => {
                             <tr key={s.idSupplier}  >
                                 <td>{s.name}</td>
                                 <td>{s.country}</td>
-                                <td>
-                                    <div>
-                                        <button className="btn btn-primary" onClick={() => goToItemCard(globalItem.idItem, s)}>Select</button>
-                                    </div>
-                                </td>
+                                {globalAction.active &&
+                                    <td>
+                                        <div>
+                                            <button className="btn btn-primary" onClick={() => goToItemCard(globalItem.idItem, s)}>Select</button>
+                                        </div>
+                                    </td>
+                                }
                             </tr>
                         )
                     })}

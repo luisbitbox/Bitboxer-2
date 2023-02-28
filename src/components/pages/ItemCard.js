@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from 'axios';
 import { ItemContext } from '../../helpers/ItemContext';
+import { DesactivationContext } from '../../helpers/DesactivationContext';
 
 
 export const ItemCard = () => {
@@ -11,6 +12,7 @@ export const ItemCard = () => {
     const [item, setItem] = useState({});
     const [creator, setCreator] = useState({});
     const { setGlobalItem  } = useContext(ItemContext);
+    const {setGlobalAction} = useContext(DesactivationContext);
 
     const [supplier, setSupplier] = useState([]);
     const [priceReduction, setpriceReduction] = useState([]);
@@ -32,7 +34,7 @@ export const ItemCard = () => {
             console.log(result.data);
             setCreator(result.data.creator);
             setItem(result.data);
-            setChecked(result.data.state)
+            setChecked(result.data.state === "ACTIVE");
         } catch (error) {
             console.log(error);
         }
@@ -65,14 +67,13 @@ export const ItemCard = () => {
         const newItem = {
             description: e.target.description.value,
             price: e.target.price.value,
-            state: checked,
+            state: checked ? "ACTIVE" : "DISCONTINUED",
             suppliers: supplier
         };
 
         try {
             const result = await axios.put("http://localhost:8080/erp/api/item/" + params.id, newItem);
-            console.log(result.data);
-            console.log(e.target.state.value);
+
             navigate(`/item`);
         } catch (error) {
             console.log(error);
@@ -80,19 +81,23 @@ export const ItemCard = () => {
     }
 
     const handleChange = (event) => {
-        if(item){
-            setChecked(event.target.checked);
-        }
+        console.log("El evento checked es: "+event.target.checked);
+        setChecked(event.target.checked);
     }
 
     const goToSupplier = () => {
         setGlobalItem(item);
+        setAction();
         navigate(`/supplier`);
     }
     
     const goToNewPriceReduction = () => {
         setGlobalItem(item);
         navigate(`/newPriceReduction`);
+    }
+
+    const setAction = () => {
+        setGlobalAction({active: true});
     }
 
 
@@ -134,7 +139,7 @@ export const ItemCard = () => {
                                 <input type="text" className="form-control" id="exampleInputEmail1" defaultValue={item.creation} name="creation" readOnly/>
                             </div>
                             <div className="mb-3 form-check">
-                                <input type="checkbox" className="form-check-input" id="exampleCheck1" name='state' checked={checked} onChange={handleChange} />
+                                <input type="checkbox" className="form-check-input" id="exampleCheck1" name='state' checked={checked} onChange={handleChange}/>
                                 <label className="form-check-label" htmlFor="exampleCheck1">State</label>
                             </div>
                             <button type="submit" className="btn btn-primary">Edit</button>

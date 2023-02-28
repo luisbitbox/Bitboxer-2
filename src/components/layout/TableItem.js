@@ -23,7 +23,7 @@ export const TableItem = ({itemFilter}) => {
             if(itemFilter){
                 setItem(result.data.filter((i) => i.state==="ACTIVE"));
             }else{
-                setItem([]);
+                setItem(result.data.filter((i) => i.state==="DISCONTINUED"));
             }
         }catch(error){
             console.log(error);
@@ -63,8 +63,9 @@ export const TableItem = ({itemFilter}) => {
                                 <td>{i.creation}</td>
                                 <td>{i.creator.username}</td>
                                 <td>
+                                    {console.log(i.state)}
                                     <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={i.state} readOnly/>
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={i.state === "ACTIVE"} readOnly/>
                                     </div>
                                 </td>
                                 <td>

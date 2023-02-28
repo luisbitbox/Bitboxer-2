@@ -2,10 +2,12 @@ import React, { useContext, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 import { UserContext } from '../../helpers/UserContext';
+import { DesactivationContext } from '../../helpers/DesactivationContext';
 
 export const Header = ({ onItemFilter}) => {
 
     const {globalUser, setGlobalUser} = useContext(UserContext);
+    const {setGlobalAction} = useContext(DesactivationContext);
 
     useEffect(()=>{
         setGlobalUser(null);
@@ -16,8 +18,16 @@ export const Header = ({ onItemFilter}) => {
         let filtro = false;
         if(value === '1'){
             filtro = true;
+        }else{
+            filtro = false;
         }
         onItemFilter(filtro);
+    }
+
+    const desactivaBtn = () => {
+        console.log("Botón desactivado");
+        const newAction = {active: false}
+        setGlobalAction(newAction);
     }
 
   return (
@@ -36,7 +46,7 @@ export const Header = ({ onItemFilter}) => {
                                 <NavLink to="/item" className="nav-link">Items</NavLink>
                             </li>
                             <li className="nav-item dropdown">
-                                <NavLink to="/supplier" className="nav-link">Suppliers</NavLink>
+                                <NavLink to="/supplier" className="nav-link" onClick={desactivaBtn}>Suppliers</NavLink>
                             </li>
                         </ul>
                     <div>

@@ -15,24 +15,29 @@ export const Login = () => {
     e.preventDefault();
     try{
         const result = await axios.get('http://localhost:8080/erp/api/auth');
-
+        
         const foundUser = result.data.find(usuario => {
-            return username === usuario.username;
+            console.log(username + " - "+ password + " - " + role +" ::: "+ usuario.username + " - " + usuario.password + " - " + usuario.role);
+            return username === usuario.username && password === usuario.password && role === usuario.role;
         });
 
-          if (foundUser) {
+        if (foundUser) {
             setGlobalUser(foundUser);
             console.log(globalUser);
             navigate("/item");
-          } else {
+        } else {
             alert("Usuario o contraseña incorrectos");
-          }
+        }
         
         console.log(result.data);
 
       }catch(error){
         console.error(error)
       };
+  }
+
+  const handleSelect = (e)=> {
+        setRole(e.target.value);
   }
 
   useEffect(() => {
@@ -57,9 +62,9 @@ export const Login = () => {
                                 <input type="password" name="password" id="password" className="form-control"value={password} onChange={e => setPassword(e.target.value)}/>
                             </div>
                             <div className="form-group my-3">
-                                <select className="form-select" aria-label="Default select example" name='role'>
-                                    <option value={role} onChange={e => setRole(e.target.value)}>ADMIN</option>
-                                    <option value={role} onChange={e => setRole(e.target.value)}>USER</option>
+                                <select className="form-select" aria-label="Default select example" name='role' onClick={handleSelect}>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="USER">USER</option>
                                 </select>
                             </div>
                             <div className="form-group">
